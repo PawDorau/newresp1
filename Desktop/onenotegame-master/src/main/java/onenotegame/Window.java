@@ -48,23 +48,7 @@ public class Window extends Canvas{
         menu.setLayout(new FlowLayout());
         ((FlowLayout)menu.getLayout()).setHgap(75);
         ((FlowLayout)menu.getLayout()).setVgap(75);
-        
-        
-        //pole z zadaniem
-        //Task task = new Task();
-        //menu.add(task, FlowLayout.LEFT);
-        
-        
-        //result
-        Font font = new Font("SansSerif", Font.BOLD, 20);
-        JTextField Score = new JTextField("Wynik");
-        Score.setPreferredSize(new Dimension(150,75));
-        menu.add(Score, FlowLayout.CENTER);
-        Score.setHorizontalAlignment(JTextField.CENTER);
-        Score.setBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK));
-        Score.setFont(font);
-        Score.setEditable(false);
-        Score.setBackground(Color.WHITE);
+
         
         //samouczek
         JButton Help = new JButton("");

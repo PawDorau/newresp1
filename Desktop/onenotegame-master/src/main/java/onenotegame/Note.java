@@ -10,7 +10,17 @@ import java.awt.image.*;
 /**
  * @author pdora
  */
+
+
+
 public class Note {
+
+    public enum nColor {CZERWONA, POMARANCZOWA, NIEBIESKA, ZIELONA, CZARNA}
+
+    public enum nValue {
+        CALANUTA, POLNUTA, CWIERCNUTA, OSEMKA, SZESNASTKA,
+        CALAPAUZA, PAUZAPOLNUTOWA, PAUZACWIERCNUTOWA, PAUZAOSEMKOWA, PAUZASZESNASTKOWA
+    }
 
     int id;
 
@@ -22,12 +32,11 @@ public class Note {
 
     BufferedImage noteImg;
 
-    Task.Color noteColor;
-    Task.Value noteValue;
+    nColor noteColor;
+    nValue noteValue;
 
-    boolean noteClicked;
 
-    public Note(int id, int width, int height, double xCoords, double yCoords, BufferedImage noteImg, Task.Color noteColor, Task.Value noteValue) {
+    public Note(int id, int width, int height, double xCoords, double yCoords, BufferedImage noteImg, nColor noteColor, nValue noteValue) {
         this.xCoords = xCoords;
         this.yCoords = yCoords;
         this.id = id;

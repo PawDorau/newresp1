@@ -15,8 +15,9 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import static onenotegame.Task.Color.*;
-import static onenotegame.Task.Value.*;
+import static onenotegame.Note.nColor.*;
+import static onenotegame.Note.nValue.*;
+
 
 
 /**
@@ -100,7 +101,7 @@ public class Panel extends JPanel implements Runnable, KeyListener {
         int noteX = noteImg.getHeight();
         int noteY = noteImg.getHeight();
 
-        Task.Color noteColor = Task.Color.values()[rnd.nextInt(Task.Color.values().length)];
+        Note.nColor noteColor = Note.nColor.values()[rnd.nextInt(Note.nColor.values().length)];
 
         //przypis kolor
         if ((randomNum > 0 && randomNum < 5) || (randomNum > 20 && randomNum < 25)) {
@@ -115,7 +116,7 @@ public class Panel extends JPanel implements Runnable, KeyListener {
             noteColor = ZIELONA;
         }
 
-        Task.Value noteValue = CALANUTA;
+        Note.nValue noteValue = CALANUTA;
 
         if ((randomNum == 1 || randomNum - 4 == 1 || randomNum - 8 == 1 || randomNum - 12 == 1)) {
             noteValue = CALANUTA;
