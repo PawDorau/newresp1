@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="apk" build-on-make="true" name="OneNote">
+    <output-path>$PROJECT_DIR$/..</output-path>
+    <properties id="android-properties">
+      <options>
+        <option name="keyStoreUrl" value="file://" />
+      </options>
+    </properties>
+    <properties id="ant-postprocessing">
+      <options enabled="true" />
+    </properties>
+    <properties id="ant-preprocessing">
+      <options enabled="true" />
+    </properties>
+    <root id="archive" name="OneNote.apk" />
+  </artifact>
+</component>

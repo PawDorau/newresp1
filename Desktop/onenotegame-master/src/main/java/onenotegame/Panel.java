@@ -25,9 +25,10 @@ import static onenotegame.Note.nValue.*;
  */
 public class Panel extends JPanel implements Runnable, KeyListener {
 
-    private final int NOTES_COUNT = 10;
-    private final double BASE_ACCELERATION = 0.05;
-    private final double RESULT_ACCELERATION = 0.005;
+    private  int NOTES_COUNT = 5;
+    private final int MAX_NOTES_COUNT = 15;
+    private final double BASE_ACCELERATION = 0.04;
+    private final double RESULT_ACCELERATION = 0.003;
 
     private static final int pWIDTH = 924;
     private static final int pHEIGHT = 418;
@@ -41,6 +42,8 @@ public class Panel extends JPanel implements Runnable, KeyListener {
     private Note markedNote;
 
     private Random rnd = new Random();
+
+    //int[] yConPos = new int[4];
 
     private int lastNoteId = 0;
     private int result = 0;
@@ -104,35 +107,37 @@ public class Panel extends JPanel implements Runnable, KeyListener {
         Note.nColor noteColor = Note.nColor.values()[rnd.nextInt(Note.nColor.values().length)];
 
         //przypis kolor
-        if ((randomNum > 0 && randomNum < 5) || (randomNum > 20 && randomNum < 25)) {
+        if ((randomNum >= 1 && randomNum <= 4) || (randomNum >= 21 && randomNum <= 24)) {
             noteColor = CZARNA;
-        } else if ((randomNum > 4 && randomNum < 9) || (randomNum > 24 && randomNum < 29)) {
+        } else if ((randomNum >= 5 && randomNum <= 8) || (randomNum >= 25 && randomNum <= 28)) {
             noteColor = CZERWONA;
-        } else if ((randomNum > 8 && randomNum < 13) || (randomNum > 28 && randomNum < 33)) {
+        } else if ((randomNum >= 9 && randomNum <= 12) || (randomNum >= 29 && randomNum <= 32)) {
             noteColor = NIEBIESKA;
-        } else if ((randomNum > 12 && randomNum < 17) || (randomNum > 32 && randomNum < 37)) {
+        } else if ((randomNum >= 13 && randomNum <= 16) || (randomNum >= 33 && randomNum <= 36)) {
             noteColor = POMARANCZOWA;
-        } else if ((randomNum > 16 && randomNum < 21) || (randomNum > 36 && randomNum < 41)) {
+        } else if ((randomNum >= 17 && randomNum <= 20) || (randomNum >= 37 && randomNum <= 40)) {
             noteColor = ZIELONA;
         }
 
-        Note.nValue noteValue = CALANUTA;
+        Note.nValue noteValue = Note.nValue.values()[rnd.nextInt(Note.nValue.values().length)];
 
-        if ((randomNum == 1 || randomNum - 4 == 1 || randomNum - 8 == 1 || randomNum - 12 == 1)) {
+        if ((randomNum == 1 || randomNum  == 5 || randomNum  == 9 || randomNum  == 13 || randomNum == 17)) {
             noteValue = CALANUTA;
-        } else if ((randomNum == 2 || randomNum - 4 == 2 || randomNum - 8 == 2 || randomNum - 12 == 2)) {
+        } else if ((randomNum == 2 || randomNum  == 6 || randomNum  == 10 || randomNum  == 14 || randomNum == 18)) {
             noteValue = POLNUTA;
-        } else if ((randomNum == 3 || randomNum - 4 == 3 || randomNum - 8 == 3 || randomNum - 12 == 3)) {
+        } else if ((randomNum == 3 || randomNum  == 7 || randomNum  == 11 || randomNum  == 15 || randomNum == 19)) {
             noteValue = CWIERCNUTA;
-        } else if ((randomNum == 4 || randomNum - 4 == 4 || randomNum - 8 == 4 || randomNum - 12 == 4)) {
-            noteValue = CALANUTA;
-        } else if ((randomNum - 20 == 1 || randomNum - 24 == 1 || randomNum - 28 == 1 || randomNum - 32 == 1)) {
+        } else if ((randomNum == 4 || randomNum  == 8 || randomNum  == 12 || randomNum  == 16 || randomNum == 20)) {
+            noteValue = OSEMKA;
+        }
+
+        if ((randomNum  == 21 || randomNum  == 25 || randomNum  == 29 || randomNum  == 33 || randomNum == 37)) {
             noteValue = CALAPAUZA;
-        } else if ((randomNum - 20 == 2 || randomNum - 24 == 2 || randomNum - 28 == 2 || randomNum - 32 == 2)) {
+        } else if ((randomNum  == 22 || randomNum  == 26 || randomNum  == 30 || randomNum  == 34 || randomNum == 38)) {
             noteValue = PAUZAPOLNUTOWA;
-        } else if ((randomNum - 20 == 3 || randomNum - 24 == 3 || randomNum - 28 == 3 || randomNum - 32 == 3)) {
+        } else if ((randomNum  == 23 || randomNum  == 27 || randomNum  == 31 || randomNum  == 35 || randomNum == 39)) {
             noteValue = PAUZACWIERCNUTOWA;
-        } else if ((randomNum - 20 == 4 || randomNum - 24 == 4 || randomNum - 28 == 4 || randomNum - 32 == 4)) {
+        } else if ((randomNum  == 24 || randomNum  == 28 || randomNum  == 32 || randomNum  == 36 || randomNum == 40)) {
             noteValue = PAUZAOSEMKOWA;
         }
 
@@ -181,8 +186,10 @@ public class Panel extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    void start (){running = true;
-    addNotify(); }
+    void start() {
+        running = true;
+        addNotify();
+    }
 
     void stop() {
         running = false;
@@ -200,6 +207,8 @@ public class Panel extends JPanel implements Runnable, KeyListener {
 
         for (Note note : notes) {
             Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
 
             g2d.setColor(Color.WHITE);
             g2d.drawImage(note.noteImg, getNotePositionX(note), getNotePositionY(note), null);
@@ -212,11 +221,12 @@ public class Panel extends JPanel implements Runnable, KeyListener {
 
             g2s.setFont(new Font("SansSerif", Font.BOLD, 25));
             g2s.setColor(Color.BLACK);
-            g2s.drawString("WYNIK: "+(Integer.toString(result)),pWIDTH-100, 468);
+            g2s.drawString("WYNIK: " + (Integer.toString(result)), pWIDTH - 100, 468);
             g2s.drawString((markedNote.noteColor.name() + " " + markedNote.noteValue.name()), 150, 468);
-            g2s.drawRect(50,418,pWIDTH,84);
+            g2s.drawRect(50, 418, pWIDTH, 84);
 
             if (note == markedNote) {
+                //markedNote.noteImg = null;
                 g2d.setColor(Color.BLUE);
             } else {
                 g2d.setColor(Color.BLACK);
@@ -231,8 +241,6 @@ public class Panel extends JPanel implements Runnable, KeyListener {
      * - obsluga klikniecia
      * - obliczenie nowej pozycji
      * - usuniecie tych nut ktore wyszly za ekran
-     *
-     * Warto byloby dodac tutaj uzaleznienie od minietego czasu i na jego podstawie wyliczac przebyty dystans.
      */
     private void cycle() {
         handleMouseClick();
@@ -247,6 +255,7 @@ public class Panel extends JPanel implements Runnable, KeyListener {
                 noteIterator.remove();
                 removed++;
                 if (note == markedNote) {
+                    markedNote.noteImg = null;
                     removedMarked = true;
                 }
             }
@@ -257,14 +266,15 @@ public class Panel extends JPanel implements Runnable, KeyListener {
         }
         if (removedMarked) {
             selectNewMarkedNote();
+
             result--;
 
-            if(result<0){
-                result=0;
+        System.out.println("Twój wynik: " + result);
+
+            if (result < 0) {
+                 result = 0;
             }
-            System.out.println("Buuu! Twój wynik: " + result);
-            //TODO: Co jeżeli jest wynik < 0;
-        }
+    }
     }
 
     /**
@@ -274,7 +284,7 @@ public class Panel extends JPanel implements Runnable, KeyListener {
         Note newMarkedNote = null;
         while (newMarkedNote == null) {
             newMarkedNote = notes.get(rnd.nextInt(notes.size()));
-            if ((newMarkedNote == markedNote )) {
+            if ((newMarkedNote == markedNote)&&(newMarkedNote.xCoords<=50)&&(newMarkedNote.xCoords>=0)) {
                 newMarkedNote = null;
             }
         }
@@ -299,9 +309,11 @@ public class Panel extends JPanel implements Runnable, KeyListener {
             int positionY = getNotePositionY(markedNote);
             if (clickedX > positionX && clickedX < (positionX + markedNote.width) &&
                     clickedY > positionY && clickedY < (positionY + markedNote.height)) {
-                System.out.println("Brawo! Twój wynik: " + result);
+                System.out.println("Twój wynik: " + result);
                 result++;
+
                 selectNewMarkedNote();
+                addMoreNotes();
             }
             clickedY = -1;
             clickedX = -1;
@@ -320,8 +332,25 @@ public class Panel extends JPanel implements Runnable, KeyListener {
      * Dzieki czemu mozna szczegolowiej obliczyc pozycje (na przyklad w ciagu jednego cyklu nuta moze przesunac sie o 0.1 pixela)
      */
     private int getNotePositionY(Note note) {
-        return (int) (note.yCoords / 100 * pHEIGHT);
-    }
+        int yConPos = 0,  i = rnd.nextInt(4) + 1;
+
+        if (note.id % 4 == 0) {
+            if(note.width < 100){
+                yConPos=250;
+            }else yConPos = 50;
+        } else if (note.id % 4 == 3) {
+            yConPos = 60;
+        } else if (note.id % 4 == 2) {
+            if(note.width < 100){
+                yConPos=200;
+            }else yConPos = 50;
+        } else if(note.id % 4 == 1) {
+            yConPos = 80;
+        }
+            /*   /100 * pHEIGHT); */
+            return (int) (note.yCoords = yConPos);
+        }
+
 
     /**
      * Jak wyzej.
@@ -330,6 +359,16 @@ public class Panel extends JPanel implements Runnable, KeyListener {
         return (int) (note.xCoords / 100 * pWIDTH);
     }
 
+    private int addMoreNotes(){
+        if(result%2==0){
+            NOTES_COUNT ++;
+        }
+
+        if(NOTES_COUNT>=MAX_NOTES_COUNT){
+            NOTES_COUNT=MAX_NOTES_COUNT;
+        }
+        return(NOTES_COUNT);
+    }
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -337,7 +376,10 @@ public class Panel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        int KeyCode = e.getKeyCode();
+        if (KeyCode == KeyEvent.VK_SPACE) {
+            start();
+        }
     }
 
     @Override
